@@ -15,12 +15,13 @@ public class Player : MonoBehaviour
     private int a_isRunning;
 
 
-    Vector2 currentMovementInput;
-    Vector3 currentMovement;
-    Vector3 currentRunMovement;
-    bool isMovementPressed;
-    bool isRunningPressed;
-    float rotationFactorPerFrame = 10f;
+    private Vector2 currentMovementInput;
+    private Vector3 currentMovement;
+    private Vector3 currentRunMovement;
+    private bool isMovementPressed;
+    private bool isRunningPressed;
+    private float rotationFactorPerFrame = 10f;
+    [SerializeField] private float gravityValue = -9.81f;
 
     [SerializeField] private float velocity;
     [SerializeField] private float runMultiplierVelovity = 3;
@@ -78,7 +79,6 @@ public class Player : MonoBehaviour
         positionToLookAt.z = currentMovement.z;
         Quaternion currentRotation = transform.rotation;
 
-        Debug.Log(isMovementPressed);
         if (isMovementPressed)
         {
             Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
@@ -115,11 +115,14 @@ public class Player : MonoBehaviour
         if (isRunningPressed)
         {
             characterController.Move(currentRunMovement * Time.deltaTime * velocity);
+            currentRunMovement.y += gravityValue * Time.deltaTime;
         }
         else
         {
             characterController.Move(currentMovement * Time.deltaTime * velocity);
+            currentMovement.y += gravityValue * Time.deltaTime;
         }
+
     }
 
 
