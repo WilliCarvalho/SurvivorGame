@@ -6,11 +6,11 @@ using UnityEngine.AI;
 public class EnemyBehavior : MonoBehaviour
 {
     private NavMeshAgent enemyNavMesh;
-    private Transform playerTransform;
+    [SerializeField] private Transform playerTransform;
     private bool followPlayer;
 
     private void Awake()
-    {
+    {        
         enemyNavMesh = GetComponent<NavMeshAgent>();
     }
 
@@ -25,7 +25,6 @@ public class EnemyBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        playerTransform.position = new Vector3(other.transform.position.x, other.transform.position.y, other.transform.position.z);
         if(other.tag == "Player")
         {
             followPlayer = true;
