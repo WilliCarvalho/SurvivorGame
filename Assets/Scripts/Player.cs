@@ -20,9 +20,11 @@ public class Player : MonoBehaviour
     private Vector3 currentRunMovement;
     private bool isMovementPressed;
     private bool isRunningPressed;
+    private bool isFirePressed;
     private float rotationFactorPerFrame = 10f;
+    
     [SerializeField] private float gravityValue = -9.81f;
-
+    [SerializeField] private Gun gun;
     [SerializeField] private float velocity;
     [SerializeField] private float runMultiplierVelovity = 3;
 
@@ -40,7 +42,10 @@ public class Player : MonoBehaviour
 
         playerInput.CharacterControls.Run.started += OnRunningInput;
         playerInput.CharacterControls.Run.canceled += OnRunningInput;
+
+        playerInput.CharacterControls.Fire.started += OnFireInput;
     }
+
 
     private void GetAnimatorParameters()
     {
@@ -61,6 +66,22 @@ public class Player : MonoBehaviour
     void OnRunningInput(InputAction.CallbackContext context)
     {
         isRunningPressed = context.ReadValueAsButton();
+    }
+
+    private void OnFireInput(InputAction.CallbackContext context)
+    {
+        isFirePressed = context.ReadValueAsButton();
+
+        Fire();
+    }
+
+    private void Fire()
+    {
+        //Executar animações de estar atirando do player
+        if (isFirePressed)
+        {
+            gun.Fire();
+        }
     }
 
     // Update is called once per frame

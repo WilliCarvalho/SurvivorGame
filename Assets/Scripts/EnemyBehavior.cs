@@ -7,17 +7,17 @@ public class EnemyBehavior : MonoBehaviour
 {
     private NavMeshAgent enemyNavMesh;
     [SerializeField] private Transform playerTransform;
-    private bool followPlayer;
 
     private void Awake()
     {        
         enemyNavMesh = GetComponent<NavMeshAgent>();
+        enemyNavMesh.isStopped = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (followPlayer)
+        if (!enemyNavMesh.isStopped /*enemyNavMesh.isStopped == false*/)
         {
             enemyNavMesh.SetDestination(playerTransform.position);
         }
@@ -27,7 +27,12 @@ public class EnemyBehavior : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            followPlayer = true;
+            enemyNavMesh.isStopped = false;
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        enemyNavMesh.isStopped = true;
     }
 }
