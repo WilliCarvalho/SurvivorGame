@@ -13,14 +13,17 @@ public class Player : MonoBehaviour
 
     private int a_isWalking;
     private int a_isRunning;
+    private int a_isFiring;
 
 
     private Vector2 currentMovementInput;
     private Vector3 currentMovement;
     private Vector3 currentRunMovement;
+
     private bool isMovementPressed;
     private bool isRunningPressed;
     private bool isFirePressed;
+
     private float rotationFactorPerFrame = 10f;
     
     [SerializeField] private float gravityValue = -9.81f;
@@ -44,6 +47,7 @@ public class Player : MonoBehaviour
         playerInput.CharacterControls.Run.canceled += OnRunningInput;
 
         playerInput.CharacterControls.Fire.started += OnFireInput;
+        playerInput.CharacterControls.Fire.canceled += OnFireInput;
     }
 
 
@@ -51,6 +55,7 @@ public class Player : MonoBehaviour
     {
         a_isWalking = Animator.StringToHash("isWalking");
         a_isRunning = Animator.StringToHash("isRunning");
+        a_isFiring = Animator.StringToHash("isFiring");
     }
 
     void OnMovementInput(InputAction.CallbackContext context)
@@ -87,6 +92,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        print(isFirePressed);
         MovePlayer();
         AnimationHandler();
         RotationHandler();
@@ -128,6 +134,17 @@ public class Player : MonoBehaviour
         else if (!isMovementPressed || !isRunningPressed && isRunningAnimation)
         {
             animator.SetBool(a_isRunning, false);
+        }
+
+        //ternary If
+        //isFirePressed == true ? animator.SetBool(a_isFiring, true) : animator.SetBool(a_isFiring, false);
+        if (isFirePressed)
+        {
+            animator.SetBool(a_isFiring, true);
+        }
+        else
+        {
+            animator.SetBool(a_isFiring, false);
         }
     }
 
